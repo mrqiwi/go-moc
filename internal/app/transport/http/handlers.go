@@ -15,7 +15,7 @@ type MusicOnConsolePlayer interface {
 	Next() error
 	Previous() error
 	Exit() error
-	Volume(level string) error
+	Volume(bool) error
 	Mute() error
 	TrackInfo() (mocp.TrackInfo, error)
 }
@@ -96,15 +96,19 @@ func (h *HTTPHandler) Exit(ctx *gin.Context) {
 	ctx.Status(http.StatusOK)
 }
 
-func (h *HTTPHandler) Volume(ctx *gin.Context) {
-	level := ctx.GetHeader("Level")
-	if level == "" {
+func (h *HTTPHandler) VolumeIncrease(ctx *gin.Context) {
+	err := h.mocp.Volume(true)
+	if err != nil {
 		ctx.Status(http.StatusBadRequest)
 
 		return
 	}
 
-	err := h.mocp.Volume(level)
+	ctx.Status(http.StatusOK)
+}
+
+func (h *HTTPHandler) VolumeDecrease(ctx *gin.Context) {
+	err := h.mocp.Volume(false)
 	if err != nil {
 		ctx.Status(http.StatusBadRequest)
 

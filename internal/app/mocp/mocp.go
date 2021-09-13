@@ -83,15 +83,13 @@ func (m MOCp) Exit() error {
 	return nil
 }
 
-func (m MOCp) Volume(level string) error {
+func (m MOCp) Volume(isIncrease bool) error {
 	var cmd *exec.Cmd
 
-	if level == "+" {
+	if isIncrease {
 		cmd = exec.Command("mocp", "--volume", "+5")
-	} else if level == "-" {
+	} else{
 		cmd = exec.Command("mocp", "--volume", "-5")
-	} else {
-		return errUnknownCommand
 	}
 
 	err := cmd.Run()
