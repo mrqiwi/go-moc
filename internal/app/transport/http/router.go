@@ -10,6 +10,8 @@ func NewGinRouter(h *HTTPHandler) *gin.Engine {
 	r.POST("/pause", h.TogglePause)
 	r.POST("/next", h.Next)
 	r.POST("/previous", h.Previous)
+	r.POST("/forward", h.Forward)
+	r.POST("/backward", h.Backward)
 	r.POST("/exit", h.Exit)
 	r.POST("/volume-increase", h.VolumeIncrease)
 	r.POST("/volume-decrease", h.VolumeDecrease)

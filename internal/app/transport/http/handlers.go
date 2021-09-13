@@ -14,6 +14,7 @@ type MusicOnConsolePlayer interface {
 	TogglePause() error
 	Next() error
 	Previous() error
+	Seek(bool) error
 	Exit() error
 	Volume(bool) error
 	Mute() error
@@ -84,6 +85,29 @@ func (h *HTTPHandler) Previous(ctx *gin.Context) {
 
 	ctx.Status(http.StatusOK)
 }
+
+func (h *HTTPHandler) Forward(ctx *gin.Context) {
+	err := h.mocp.Seek(true)
+	if err != nil {
+		ctx.Status(http.StatusInternalServerError)
+
+		return
+	}
+
+	ctx.Status(http.StatusOK)
+}
+
+func (h *HTTPHandler) Backward(ctx *gin.Context) {
+	err := h.mocp.Seek(false)
+	if err != nil {
+		ctx.Status(http.StatusInternalServerError)
+
+		return
+	}
+
+	ctx.Status(http.StatusOK)
+}
+
 
 func (h *HTTPHandler) Exit(ctx *gin.Context) {
 	err := h.mocp.Exit()

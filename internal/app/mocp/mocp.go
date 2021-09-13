@@ -61,6 +61,23 @@ func (m MOCp) Next() error {
 	return nil
 }
 
+func (m MOCp) Seek(isForward bool) error {
+	var cmd *exec.Cmd
+
+	if isForward {
+		cmd = exec.Command("mocp", "--seek", "5")
+	} else{
+		cmd = exec.Command("mocp", "--seek", "-5")
+	}
+
+	err := cmd.Run()
+	if err != nil {
+		return fmt.Errorf("%w: %s", errCannotRunCommand, err)
+	}
+
+	return nil
+}
+
 func (m MOCp) Previous() error {
 	cmd := exec.Command("mocp", "--previous")
 
