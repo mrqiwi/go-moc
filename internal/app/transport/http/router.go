@@ -1,10 +1,13 @@
 package http
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func NewGinRouter(h *HTTPHandler) *gin.Engine {
 	r := gin.Default()
 
+	r.GET("/", h.Index)
 	r.POST("/play", h.Play)
 	r.POST("/stop", h.Stop)
 	r.POST("/pause", h.TogglePause)

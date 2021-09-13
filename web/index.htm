@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MOC</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="app" data-v-app="">
+        <p> {{ track_info }} </p>
+        <button v-on:click="play">Play</button>
+        <button v-on:click="pause">Pause</button>
+        <button v-on:click="stop">Stop</button>
+        <button v-on:click="previous">Previous</button>
+        <button v-on:click="next">Next</button>
+        <button v-on:click="backward">Backward</button>
+        <button v-on:click="forward">Forward</button>
+        <button v-on:click="volume_increase">+</button>
+        <button v-on:click="volume_decrease">-</button>
+        <button v-on:click="mute">Mute</button>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    track_info: null
+                };
+            },
+            mounted() {
+                this.get_track_info()
+            },
+            methods: {
+                get_track_info() {
+                    setInterval(() => {
+                        axios
+                            .get('/info')
+                            .then(response => (this.track_info = response.data.title || response.data.file_name))
+                            .catch(error => {console.log(error); this.errored = true;
+                            })
+                    }, 2500)
+                },
+                previous() {
+                    axios.post('/previous')
+                },
+                next() {
+                    axios.post('/next')
+                },
+                forward() {
+                    axios.post('/forward')
+                },
+                backward() {
+                    axios.post('/backward')
+                },
+                play() {
+                    axios.post('/play')
+                },
+                stop() {
+                    axios.post('/stop')
+                },
+                pause() {
+                    axios.post('/pause')
+                },
+                mute() {
+                    axios.post('/mute')
+                },
+                volume_increase() {
+                    axios.post('/volume-increase')
+                },
+                volume_decrease() {
+                    axios.post('volume-decrease')
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

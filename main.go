@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"log"
 	"os/exec"
 
@@ -9,6 +10,9 @@ import (
 	"go-moc/internal/app/transport/http"
 )
 
+//go:embed web
+var static embed.FS
+
 func main() {
 	_, err := exec.LookPath("mocp")
 	if err != nil {
@@ -16,8 +20,7 @@ func main() {
 	}
 
 	moc := mocp.NewMOCp()
-	handler := http.NewHTTPHandler(moc)
+	handler := http.NewHTTPHandler(static, moc)
 	router := http.NewGinRouter(handler)
-
 	startup.StartServer(router)
 }

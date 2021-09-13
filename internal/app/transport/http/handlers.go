@@ -1,6 +1,7 @@
 package http
 
 import (
+	"embed"
 	"net/http"
 
 	"go-moc/internal/app/mocp"
@@ -22,13 +23,19 @@ type MusicOnConsolePlayer interface {
 }
 
 type HTTPHandler struct {
+	static embed.FS
 	mocp MusicOnConsolePlayer
 }
 
-func NewHTTPHandler(mocp MusicOnConsolePlayer) *HTTPHandler {
+func NewHTTPHandler(static embed.FS, mocp MusicOnConsolePlayer) *HTTPHandler {
 	return &HTTPHandler{
+		static: static,
 		mocp: mocp,
 	}
+}
+
+func (h *HTTPHandler) Index(ctx *gin.Context) {
+	ctx.FileFromFS("web/index.htm", http.FS(h.static))
 }
 
 func (h *HTTPHandler) Play(ctx *gin.Context) {
