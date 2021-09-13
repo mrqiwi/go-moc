@@ -1,12 +1,14 @@
 package mocp
 
 import (
+	"path"
+	"path/filepath"
 	"strings"
 )
 
 type TrackInfo struct {
 	State       string
-	File        string
+	FileName    string
 	Title       string
 	Artist      string
 	SongTitle   string
@@ -36,7 +38,8 @@ func fillTrackInfo(data string) TrackInfo {
 
 	if strings.Contains(info[1], "File: ") {
 		file := info[1]
-		trackInfo.File = file[len("File: "):]
+		basePath := filepath.Base(file[len("File: "):])
+		trackInfo.FileName = strings.TrimSuffix(basePath, path.Ext(basePath))
 	}
 
 	if strings.Contains(info[2], "Title: ") {
