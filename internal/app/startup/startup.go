@@ -13,7 +13,7 @@ import (
 )
 
 func StartServer(router *gin.Engine) {
-	const addr = "localhost:9999"
+	const addr = ":9999"
 
 	server := &http.Server{
 		Addr:    addr,
